@@ -9,10 +9,10 @@
 
 </head>
 <body style="margin: 5px;">
-
+<div id="app">
   <!-- Button trigger modal -->
   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    Launch demo modal
+    cart {{ cartItems.length }}
   </button>
 
   <!-- Modal -->
@@ -20,13 +20,38 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Cart</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          ...
+          <shopping-cart inline-template :items="cartItems">
+            <div>
+               <table class="table">
+                  <tr v-for="(item, index) in items">
+                     <td>{{item.name}}</td>
+                     <td style="width:120px">QTY:
+                        <input v-model="item.qty" class="form-control input-qty" type="number">
+                     </td>
+                     <td>${{item.price * item.qty}} euros</td>
+                     <td>
+                        <button @click="removeItem(index)">Remove</span></button>
+                     </td>
+                  </tr>
+                  <tr v-show="items.length === 0">
+                     <td>Cart is empty</td>
+                  </tr>
+                  <tr v-show="items.length > 0">
+                     <td></td>
+                     <td>Cart Total</td>
+                     <td>${{ Total }}</td>
+                     <td></td>
+                  </tr>
+               </table>
+            </div>
+            <!-- /.container -->
+         </shopping-cart>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -35,6 +60,17 @@
       </div>
     </div>
   </div>
+  <!-- modal -->
+  <div class="card" style="width: 18rem;" v-for="item in items">
+     <img class="card-img-top" :src="item.image" alt="">
+     <div class="card-body">
+       <h5 class="card-title">{{ item.name }}</h5>
+       <h6 class="card-text">${{ item.price }}</h6>
+       <input v-model="item.qty" type="number" class="form-control" placeholder="Qty" min="1"/>
+        <button @click="addToCart(item)" class="btn btn-primary">Add to Cart</button>
+     </div>
+  </div>
+</div>
   <script src="index.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
